@@ -11,19 +11,19 @@ to your safety, protection, and peace of mind.
 ## 📸 Screenshots
 
 ### Home — Your Legal Companion
-![Home](screenshot_home.png)
+![Home](screenshots/screenshot_home.png)
 
 ### ⚖️ Document Upload — PDF & Camera Input
-![Upload](screenshot_upload.png)
+![Upload](screenshots/screenshot_upload.png)
 
 ### 🌐 Plain-Language Analysis
-![Analysis](screenshot_analysis.png)
+![Analysis](screenshots/screenshot_analysis.png)
 
 ### 🗣️ Multi-Language Analysis
-![Multilingual Analysis](screenshot_multilingual.png)
+![Multilingual Analysis](screenshots/screenshot_multilingual.png)
 
 ### 💡 Use Cases & FAQ
-![Use Cases](screenshot_info.png)
+![Use Cases](screenshots/screenshot_info.png)
 
 ---
 
