@@ -4,9 +4,9 @@ from PIL import Image
 import base64
 
 try:
-    from backend.pdf_reader import extract_pdf
-    from backend.analyze import analyze_document
-    from backend.text_extract import extract_text_from_image
+    from pdf_reader import extract_pdf
+    from analyze import analyze_document
+    from text_extract import extract_text_from_image
 
     _BACKEND_AVAILABLE = True
 except ImportError:
