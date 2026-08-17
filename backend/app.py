@@ -25,13 +25,13 @@ def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-icon_base64 = get_base64_image("AmicusIcon.png")
+icon_base64 = get_base64_image("icons/AmicusIcon.png")
 icon_src = f"data:image/png;base64,{icon_base64}"
 
 
 st.set_page_config(
     page_title="Amicus — Understand any legal document",
-    page_icon="./AmicusIcon.ico",
+    page_icon="icons/AmicusIcon.ico",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
@@ -532,9 +532,7 @@ if st.session_state.current_page == "home":
         unsafe_allow_html=True,
     )
 
-# ==========================================
-# SCREEN 2: THE ANALYZE TOOL
-# ==========================================
+
 elif st.session_state.current_page == "analyze":
     st.button("← Back to Home", on_click=go_to_home)
     components.html(

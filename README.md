@@ -46,7 +46,7 @@ simplify complex legal text.
 ## Tech Stack
 - Python — core language
 - Streamlit — interactive web app
-- Gemini AI — plain-language document analysis and translation
+- Gemini API — plain-language document analysis and translation
 - pdfplumber — PDF text extraction
 - EasyOCR & Pillow — image processing and OCR for photo uploads
 - python-dotenv — environment variable management
