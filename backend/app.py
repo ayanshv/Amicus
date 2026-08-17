@@ -3,19 +3,22 @@ import streamlit.components.v1 as components
 from PIL import Image
 import base64
 
+try:
+    from backend.pdf_reader import extract_pdf
+    from backend.analyze import analyze_document
+    from backend.text_extract import extract_text_from_image
 
-from backend.pdf_reader import extract_pdf
-from backend.analyze import analyze_document
-from backend.text_extract import extract_text_from_image
+    _BACKEND_AVAILABLE = True
+except ImportError:
+    _BACKEND_AVAILABLE = False
 
-
-def extract_pdf(_file):
+    def extract_pdf(_file):
         return ""
 
-def analyze_document(_info, _question, _language):
+    def analyze_document(_info, _question, _language):
         return ""
 
-def extract_text_from_image(_image):
+    def extract_text_from_image(_image):
         return ""
 
 def get_base64_image(image_path):
