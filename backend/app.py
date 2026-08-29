@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image
 import base64
+from pathlib import Path
 
 try:
     from backend.pdf_reader import extract_pdf
@@ -9,14 +10,14 @@ try:
     from backend.text_extract import extract_text_from_image
 
     _BACKEND_AVAILABLE = True
-except ImportError:
+except Exception:
     _BACKEND_AVAILABLE = False
 
     def extract_pdf(_file):
         return ""
 
     def analyze_document(_info, _question, _language):
-        return ""
+        raise RuntimeError("Analysis backend is unavailable because a required module could not be imported.")
 
     def extract_text_from_image(_image):
         return ""
@@ -24,8 +25,16 @@ except ImportError:
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
+from pathlib import Path
+import base64
 
-icon_base64 = get_base64_image("icons/AmicusIcon.png")
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+icon_base64 = get_base64_image(BASE_DIR / "icons" / "AmicusIcon.png")
 icon_src = f"data:image/png;base64,{icon_base64}"
 
 
@@ -604,9 +613,14 @@ elif st.session_state.current_page == "analyze":
                     with st.spinner("Analyzing Document…"):
                         text = extract_pdf(uploaded_pdf)
                         if text and text.strip():
-                            result = analyze_document(text, st.session_state.saved_question, user_language)
-                            st.success("Analysis complete!")
-                            st.markdown(result)
+                            try:
+                                result = analyze_document(text, st.session_state.saved_question, user_language)
+                                st.success("Analysis complete!")
+                                st.markdown(result)
+                            except ValueError as exc:
+                                st.error(str(exc), icon="⚠️")
+                            except Exception as exc:
+                                st.error(f"Analysis failed: {exc}", icon="⚠️")
                         else:
                             st.error("No readable text found in this PDF. Please ensure it is a real PDF")
 
@@ -630,9 +644,14 @@ elif st.session_state.current_page == "analyze":
                     with st.spinner("Analyzing Document…"):
                         text = extract_text_from_image(uploaded_camera_image)
                         if text and text.strip():
-                            image_analysis = analyze_document(text, st.session_state.saved_question, user_language)
-                            st.success("Analysis complete!")
-                            st.markdown(image_analysis)
+                            try:
+                                image_analysis = analyze_document(text, st.session_state.saved_question, user_language)
+                                st.success("Analysis complete!")
+                                st.markdown(image_analysis)
+                            except ValueError as exc:
+                                st.error(str(exc), icon="⚠️")
+                            except Exception as exc:
+                                st.error(f"Analysis failed: {exc}", icon="⚠️")
                         else:
                             st.error("No readable text found in the image. Please ensure the document is clear and well-lit.")
 

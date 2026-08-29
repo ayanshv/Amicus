@@ -5,13 +5,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-key = os.getenv("GEMINI_API_KEY")
-print("KEY EXISTS:", key is not None)
-print("KEY PREFIX:", key[:4] if key else None)
+_CLIENT = None
 
-client = genai.Client(api_key=key)
+
+def _get_client():
+    global _CLIENT
+    if _CLIENT is None:
+        key = os.getenv("GEMINI_API_KEY")
+        if not key:
+            raise ValueError(
+                "GEMINI_API_KEY is missing. Add it to a .env file in the project root or set it in your environment, then restart Streamlit."
+            )
+        _CLIENT = genai.Client(api_key=key)
+    return _CLIENT
+
 
 def analyze_document(document_info, user_question, user_language):
+    client = _get_client()
     prompt = f"""
    You are Amicus, an AI assistant that helps people understand legal and official documents in simple, clear language.
 
