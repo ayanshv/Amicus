@@ -4,7 +4,7 @@ plain-language guidance in 65+ languages, ensuring language is never a barrier
 to your safety, protection, and peace of mind.
 
 ## 🌐 Live Demo
-[Click here to try it](https://your-amicus-app.streamlit.app/)
+[Click here to try it](https://amicusai.streamlit.app)
 
 ---
 
