@@ -1,8 +1,14 @@
+import sys
+from pathlib import Path
+import base64
+
 import streamlit as st
 import streamlit.components.v1 as components
 from PIL import Image
-import base64
-from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 try:
     from backend.pdf_reader import extract_pdf
@@ -10,29 +16,27 @@ try:
     from backend.text_extract import extract_text_from_image
 
     _BACKEND_AVAILABLE = True
-except Exception:
+except Exception as exc:
     _BACKEND_AVAILABLE = False
 
     def extract_pdf(_file):
         return ""
 
     def analyze_document(_info, _question, _language):
-        raise RuntimeError("Analysis backend is unavailable because a required module could not be imported.")
+        raise RuntimeError(
+            f"Analysis backend is unavailable because a required module could not be imported: {exc}"
+        )
 
     def extract_text_from_image(_image):
         return ""
 
-def get_base64_image(image_path):
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
-from pathlib import Path
-import base64
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
+
+
+BASE_DIR = PROJECT_ROOT
 
 icon_base64 = get_base64_image(BASE_DIR / "icons" / "AmicusIcon.png")
 icon_src = f"data:image/png;base64,{icon_base64}"
@@ -561,8 +565,6 @@ elif st.session_state.current_page == "analyze":
     with tab1:
         st.markdown('<div id="analyze"></div>', unsafe_allow_html=True)
         
-        if not _BACKEND_AVAILABLE:
-            st.error("Backend modules failed to load. Analysis will not be available.", icon="⚠️")
 
         with st.container(border=True):
             head_left, head_right = st.columns([1.4, 1], vertical_alignment="center")
