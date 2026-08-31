@@ -1,4 +1,4 @@
-streamlit
+nicegui
 google-genai
 python-dotenv
 pdfplumber
