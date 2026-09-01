@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import base64
 import io
-from nicegui import ui, app
+from nicegui import ui, app, run
 ROOT_DIR = Path(__file__).resolve().parent.parent # <-- Added an extra .parent here!
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
@@ -58,6 +58,7 @@ ui.add_head_html(f"""
         --shadow-md:  0 20px 40px -20px rgba(0,0,0,0.08);
         --shadow-lg:  0 30px 60px -25px rgba(0,0,0,0.12);
     }}
+
     .q-field__native, 
     .q-field__input, 
     .q-field__prefix, 
@@ -574,7 +575,7 @@ def home():
         """, sanitize=False).classes('w-full')
 
         with ui.row().classes('w-full justify-center -mt-14'):
-            ui.button('Start free analysis →', color=None, on_click=lambda: ui.navigate.to('/analyze')).classes('amicus-primary-btn px-8 py-3 text-lg font-medium cursor-pointer').style("font-weight: bold;")
+            ui.button('Start free analysis →', color=None, on_click=lambda: ui.navigate.to('/analyze')).classes('amicus-primary-btn px-8 py-3 text-lg font-medium cursor-pointer mt-16').style("font-weight: bold;")
 
         footer()
 
@@ -633,13 +634,40 @@ def analyze():
 
                     upload_container = ui.column().classes('w-full')
                     with upload_container:
-                        ui.label('Upload Document (PDF) or take a Photo').classes('font-bold text-white/70 mt-4')
-                        ui.upload(
-                            on_upload=lambda e: process_file(e),
-                            auto_upload=True,
-                            max_file_size=20_000_000,
-                        ).props('accept=".pdf, image/*" flat bordered color="white" text-color="black"').classes('w-full border-2 border-dashed border-white/25 rounded-xl bg-white/5 hover:border-[#8AB4FF] transition-colors')
+                        ui.label('Upload Document (PDF) or take a Photo').classes(
+                            'font-bold text-white/70 mt-4'
+                        )
 
+                        with ui.card().classes(
+                            'w-full p-8 border-2 border-dashed border-white/30 rounded-2xl '
+                            'bg-white/5 backdrop-blur-md flex flex-col items-center justify-center '
+                            'text-center cursor-pointer hover:border-white/60 hover:bg-white/10 '
+                            'transition-all group'
+                        ):
+                            ui.html(
+                                '<div style="font-size: 2.5rem; color: #ffffff; margin-bottom: 1rem;" '
+                                'class="group-hover:scale-110 transition-transform">'
+                                '<i class="fa-solid fa-cloud-arrow-up"></i></div>',
+                                sanitize=False
+                            )
+
+                            ui.label('Drop your legal document here').classes(
+                                'text-xl font-bold text-white mb-1'
+                            ).style("font-family: 'Fraunces', serif;")
+
+                            ui.label('Supports PDF and images up to 20MB').classes(
+                                'text-sm text-white/70 mb-4'
+                            )
+
+                            ui.upload(
+                                on_upload=lambda e: process_file(e),
+                                auto_upload=True,
+                                max_file_size=20_000_000,
+                            ).props(
+                                'accept=".pdf, image/*" flat bordered hide-upload-btn'
+                            ).classes(
+                                'w-full'
+                            )
                     loading_container = ui.column().classes('w-full items-center justify-center py-12').style('display: none;')
                     with loading_container:
                         ui.spinner('dots', size='4em', color='#8AB4FF')
@@ -666,20 +694,50 @@ def analyze():
                             file_obj = io.BytesIO(file_content)
 
                             if is_pdf:
-                                extracted_text = extract_pdf(file_obj)
+                                extracted_text = await run.io_bound(extract_pdf, file_obj)
                             else:
-                                extracted_text = extract_text_from_image(file_obj)
+                                extracted_text = await run.io_bound(extract_text_from_image, file_obj)
 
                             if extracted_text and extracted_text.strip():
-                                final_result = analyze_document(extracted_text, question_input.value, language_select.value)
+                                final_result = await run.io_bound(
+                                    analyze_document,
+                                    extracted_text,
+                                    question_input.value,
+                                    language_select.value
+                                )
                                 result_markdown.set_content(final_result)
                             else:
                                 ui.notify('No readable text found in this file.', type='negative')
                                 result_markdown.set_content("❌ No readable text found.")
 
                         except Exception as exc:
-                            ui.notify(f"Analysis failed: {str(exc)}", type='negative')
-                            result_markdown.set_content(f"**Error:** {str(exc)}")
+                            error_message = str(exc)
+
+                            if '503' in error_message and 'UNAVAILABLE' in error_message:
+                                friendly_message = """
+                        ### Amicus is a little busy right now
+
+                        Our AI is experiencing unusually high demand.
+
+                        Please wait a moment and try uploading your document again.
+
+                        Your document was not successfully analyzed.
+                        """
+                                ui.notify(
+                                    'Amicus is temporarily busy. Please try again in a moment.',
+                                    type='warning'
+                                )
+                                result_markdown.set_content(friendly_message)
+
+                            else:
+                                ui.notify(
+                                    'Something went wrong while analyzing your document.',
+                                    type='negative'
+                                )
+                                result_markdown.set_content(
+                                    "**We couldn't analyze your document right now.**\n\n"
+                                    "Please try again in a moment."
+                                )
                         finally:
                             loading_container.style('display: none;')
                             result_container.style('display: flex;')
