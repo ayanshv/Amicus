@@ -24,6 +24,7 @@ icon_src = f"data:image/png;base64,{icon_base64}" if icon_base64 else ""
 LOCAL_IMAGE_PATH = ROOT_DIR / "assets" / "bg.jpg"
 
 app.add_static_files('/images', str(ROOT_DIR / "assets"))
+app.add_static_files('/icons', str(ROOT_DIR / "icons"))
 
 BG_IMAGE_URL = "/images/bg.jpg"
 
@@ -250,6 +251,19 @@ ui.add_head_html(f"""
         margin: 0 auto; line-height: 1.6;
     }}
 
+    .amicus-warning {{
+    font-size: 1rem !important;
+    padding: 17px 22px !important;
+    border-radius: 16px !important;
+    min-width: 380px !important;
+    font-weight: 600 !important;
+    backdrop-filter: blur(18px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+    box-shadow:
+        0 18px 40px -20px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.15) !important;
+}}
+
     .site-footer {{
         max-width: 1120px; 
         margin: 5rem auto 0; 
@@ -266,7 +280,7 @@ ui.add_head_html(f"""
 
     .amicus-content h1, .amicus-content h2, .amicus-content h3,
     .amicus-markdown h1, .amicus-markdown h2, .amicus-markdown h3 {{
-        font-family: 'Geist', sans-serif !important;
+        font-family: 'Fraunces', sans-serif !important;
         color: #fff !important; font-weight: 600 !important;
         font-size: 1.7rem !important; margin-top: 1.2em !important;
         margin-bottom: 0.5em !important; line-height: 1.2 !important;
@@ -628,8 +642,8 @@ def analyze():
                         "Khmer (ខ្Khmer)", "Lao (ລາວ)", "Macedonian (Македонски)", "Mongolian (Монгол)",
                         "Nepali (नेपाली)", "Sinhala (සිංහල)", "Albanian (Shqip)", "Bosnian (Bosanski)",
                         "Uzbek (Oʻzbekcha)", "Zulu (isiZulu)", "Afrikaans (Afrikaans)"],
-                            value="English",
-                            label="Language"
+                            value=None,
+                            label="Language *"
                         ).props('outlined label-color="white"').classes('w-48 amicus-select rounded-xl')
 
                     upload_container = ui.column().classes('w-full')
@@ -668,6 +682,8 @@ def analyze():
                             ).classes(
                                 'w-full'
                             )
+
+                            
                     loading_container = ui.column().classes('w-full items-center justify-center py-12').style('display: none;')
                     with loading_container:
                         ui.spinner('dots', size='4em', color='#8AB4FF')
@@ -685,6 +701,12 @@ def analyze():
                         result_markdown.set_content('')
 
                     async def process_file(e):
+                        if not language_select.value:
+                            ui.notify(
+                                'Please select your preferred language before uploading a document.',
+                                type='warning'
+                            ).classes('amicus-warning')
+                            return
                         try:
                             upload_container.style('display: none;')
                             loading_container.style('display: flex;')
@@ -810,4 +832,7 @@ def info():
             ui.label("We currently support over 65 languages. Just select your preferred language from the dropdown in the Analyze tool.").classes('p-4 text-white/70')
 
     footer()
-ui.run(title="Amicus — Understand any legal document", favicon=str(BASE_DIR / "icons" / "AmicusIcon.ico"))
+ui.run(
+    title="Amicus — Understand any legal document",
+    favicon="/icons/AmicusIcon.ico"
+)
