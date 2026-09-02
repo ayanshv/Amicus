@@ -21,12 +21,12 @@ BASE_DIR = ROOT_DIR
 icon_base64 = get_base64_image(BASE_DIR / "icons" / "AmicusIcon.png")
 icon_src = f"data:image/png;base64,{icon_base64}" if icon_base64 else ""
 
-LOCAL_IMAGE_PATH = ROOT_DIR / "assets" / "bg.jpg"
+LOCAL_IMAGE_PATH = ROOT_DIR / "assets" / "bg.png"
 
 app.add_static_files('/images', str(ROOT_DIR / "assets"))
 app.add_static_files('/icons', str(ROOT_DIR / "icons"))
 
-BG_IMAGE_URL = "/images/bg.jpg"
+BG_IMAGE_URL = "/images/bg.png"
 
 ui.add_head_html(f"""
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,12 +53,476 @@ ui.add_head_html(f"""
         --glass:      rgba(255,255,255,0.75); 
         --glass-2:    rgba(255,255,255,0.50);
         --glass-brd:  rgba(255,255,255,0.90);
-        --cta-grad:   linear-gradient(to bottom, #000000, #000000); 
+        --cta-grad:   linear-gradient(to bottom, #182338); 
         --accent:     #253b85;
         --radius:     22px;
         --shadow-md:  0 20px 40px -20px rgba(0,0,0,0.08);
         --shadow-lg:  0 30px 60px -25px rgba(0,0,0,0.12);
     }}
+
+    .amicus-story {{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14rem;
+    padding-top: 8rem;
+}}
+
+.product-demo {{
+    width: min(1180px, calc(100% - 32px));
+}}
+
+.demo-frame {{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    border-radius: 32px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.14),
+            rgba(255,255,255,0.045)
+        );
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        0 45px 100px -48px rgba(0,0,0,0.72),
+        inset 0 1px 0 rgba(255,255,255,0.14);
+
+    backdrop-filter: blur(24px) saturate(135%);
+    -webkit-backdrop-filter: blur(24px) saturate(135%);
+}}
+
+.demo-window {{
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background: rgba(5,10,20,0.72);
+    border: 1px solid rgba(255,255,255,0.10);
+}}
+
+.demo-window-bar {{
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    background: rgba(255,255,255,0.035);
+}}
+
+.demo-dots {{
+    position: absolute;
+    left: 16px;
+
+    display: flex;
+    gap: 6px;
+}}
+
+.demo-dots span {{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.24);
+}}
+
+.demo-window-title {{
+    color: rgba(255,255,255,0.56);
+    font-family: 'Geist', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+}}
+
+.amicus-demo-video {{
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #080d17;
+}}
+
+.showcase-section {{
+    width: min(1180px, calc(100% - 32px));
+}}
+
+.showcase-grid-two {{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px;
+}}
+
+.showcase-grid-three {{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}}
+
+.showcase-card {{
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.095),
+            rgba(255,255,255,0.035)
+        );
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+        0 34px 80px -48px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.10);
+
+    backdrop-filter: blur(20px) saturate(130%);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+
+    transition:
+        box-shadow .35s ease,
+        border-color .35s ease,
+        background .35s ease;
+}}
+
+.showcase-card:hover {{
+    border-color: rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 42px 92px -45px rgba(0,0,0,0.72),
+        inset 0 1px 0 rgba(255,255,255,0.14);
+}}
+
+.scroll-card {{
+    --scroll-y: 0px;
+    --scroll-scale: 1;
+
+    transform:
+        translate3d(0, var(--scroll-y), 0)
+        scale(var(--scroll-scale));
+
+    transform-origin: center center;
+
+    will-change: transform;
+
+    backface-visibility: hidden;
+}}
+
+.showcase-card-large {{
+    min-height: 620px;
+    display: flex;
+    flex-direction: column;
+}}
+
+.showcase-card-hero {{
+    min-height: 820px;
+}}
+
+.showcase-card-small {{
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+}}
+
+.showcase-card-tall {{
+    min-height: 760px;
+}}
+
+.showcase-image {{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.05),
+            rgba(0,0,0,0.10)
+        );
+}}
+
+.showcase-image img {{
+    display: block;
+    width: 100%;
+    height: auto;
+
+    object-fit: cover;
+
+    transition:
+        transform .7s cubic-bezier(0.22, 1, 0.36, 1);
+}}
+
+.showcase-card:hover .showcase-image img {{
+    transform: scale(1.025);
+}}
+
+.showcase-card-large .showcase-image {{
+    flex: 1;
+    min-height: 0;
+}}
+
+.showcase-card-large .showcase-image img {{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}}
+
+.showcase-image-hero {{
+    min-height: 620px;
+}}
+
+.showcase-image-hero img {{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}}
+
+.showcase-card-small .showcase-image {{
+    min-height: 300px;
+}}
+
+.showcase-card-small .showcase-image img {{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}}
+
+.showcase-image-tall {{
+    height: 100%;
+}}
+
+.showcase-image-tall img {{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}}
+
+.showcase-copy {{
+    padding: 30px 30px 34px;
+}}
+
+.showcase-copy-hero {{
+    padding: 34px 38px 38px;
+}}
+
+.showcase-label {{
+    margin-bottom: 12px;
+
+    color: rgba(255,255,255,0.43);
+
+    font-family: 'Geist', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+}}
+
+.showcase-copy h3 {{
+    margin: 0;
+
+    color: #ffffff;
+
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.65rem, 2.5vw, 2.35rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+}}
+
+.showcase-copy p {{
+    margin: 14px 0 0;
+    max-width: 520px;
+
+    color: rgba(255,255,255,0.60);
+
+    font-family: 'Geist', sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.7;
+}}
+
+.showcase-copy-hero h3 {{
+    font-size: clamp(2rem, 3vw, 3rem);
+}}
+
+.showcase-split {{
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 70px;
+    align-items: center;
+}}
+
+.showcase-card-tall {{
+    height: 780px;
+}}
+
+.showcase-side-copy {{
+    padding: 10px 10px 10px 0;
+}}
+
+.showcase-side-copy h2 {{
+    margin: 0.8rem 0 2.7rem;
+
+    color: #ffffff;
+
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.7rem, 5vw, 4.5rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+}}
+
+.showcase-points {{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}}
+
+.showcase-point {{
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 18px;
+
+    padding: 22px 0;
+
+    border-top: 1px solid rgba(255,255,255,0.11);
+}}
+
+.showcase-point:last-child {{
+    border-bottom: 1px solid rgba(255,255,255,0.11);
+}}
+
+.point-number {{
+    color: rgba(255,255,255,0.34);
+    font-family: 'Silkscreen', cursive;
+    font-size: 0.72rem;
+    padding-top: 3px;
+}}
+
+.showcase-point h3 {{
+    margin: 0;
+
+    color: #ffffff;
+
+    font-family: 'Geist', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}}
+
+.showcase-point p {{
+    margin: 7px 0 0;
+
+    color: rgba(255,255,255,0.55);
+
+    font-family: 'Geist', sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}}
+
+@media (max-width: 900px) {{
+    .amicus-story {{
+        gap: 9rem;
+    }}
+
+    .showcase-grid-two,
+    .showcase-grid-three,
+    .showcase-split {{
+        grid-template-columns: 1fr;
+    }}
+
+    .showcase-card-large {{
+        min-height: 560px;
+    }}
+
+    .showcase-card-small {{
+        min-height: 560px;
+    }}
+
+    .showcase-card-hero {{
+        min-height: 680px;
+    }}
+
+    .showcase-card-tall {{
+        height: 680px;
+    }}
+
+    .showcase-image-hero {{
+        min-height: 500px;
+    }}
+
+    .showcase-side-copy {{
+        padding: 0;
+    }}
+}}
+
+@media (max-width: 640px) {{
+    .amicus-story {{
+        gap: 7rem;
+        padding-top: 5rem;
+    }}
+
+    .product-demo,
+.showcase-section {{
+    width: min(1180px, calc(100% - 32px)) !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+}}
+
+    .demo-frame {{
+        padding: 6px;
+        border-radius: 24px;
+    }}
+
+    .demo-window {{
+        border-radius: 19px;
+    }}
+
+    .showcase-card {{
+        border-radius: 24px;
+    }}
+
+    .showcase-card-large {{
+        min-height: 0;
+    }}
+
+    .showcase-card-small {{
+        min-height: 0;
+    }}
+
+    .showcase-card-hero {{
+        min-height: 0;
+    }}
+
+    .showcase-card-tall {{
+        height: 560px;
+    }}
+
+    .showcase-image {{
+        min-height: 280px !important;
+    }}
+
+    .showcase-copy,
+    .showcase-copy-hero {{
+        padding: 24px;
+    }}
+
+    .showcase-side-copy h2 {{
+        font-size: 2.7rem;
+    }}
+}}
 
     .q-field__native, 
     .q-field__input, 
@@ -173,6 +637,174 @@ ui.add_head_html(f"""
         -webkit-backdrop-filter: blur(18px) saturate(160%);
         padding: 22px; width: 100%;
     }}
+
+    .amicus-closing {{
+    width: 100%;
+    padding: 10rem 24px 8rem;
+    box-sizing: border-box;
+}}
+
+.amicus-closing-inner {{
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    min-height: 520px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 34px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255,255,255,0.10),
+            transparent 45%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.10),
+            rgba(255,255,255,0.035)
+        );
+
+    border: 1px solid rgba(255,255,255,0.14);
+
+    backdrop-filter: blur(20px) saturate(130%);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+
+    box-shadow:
+        0 40px 100px -50px rgba(0,0,0,0.65),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+}}
+
+.amicus-closing-inner::before {{
+    content: '';
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    top: -260px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,0.07),
+        transparent 70%
+    );
+
+    pointer-events: none;
+}}
+
+.amicus-closing-eyebrow {{
+    position: relative;
+    z-index: 1;
+
+    color: rgba(255,255,255,0.55);
+    font-family: 'Geist', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    margin-bottom: 1.25rem;
+}}
+
+.amicus-closing h2 {{
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+}}
+
+.amicus-closing p {{
+    position: relative;
+    z-index: 1;
+
+    max-width: 520px;
+    margin: 1.75rem auto 0;
+
+    color: rgba(255,255,255,0.62);
+
+    font-family: 'Geist', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.65;
+}}
+
+.amicus-closing-btn {{
+    position: relative;
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-top: 2.5rem;
+    padding: 14px 22px;
+
+    color: #ffffff !important;
+    background: #000000;
+
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-family: 'Geist', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    box-shadow:
+        0 18px 40px -24px rgba(0,0,0,0.9);
+
+    transition:
+        transform .25s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow .25s ease,
+        background .25s ease;
+}}
+
+.amicus-closing-btn span {{
+    transition: transform .25s ease;
+}}
+
+.amicus-closing-btn:hover {{
+    transform: translateY(-3px);
+    background: rgba(0,0,0,0.92);
+
+    box-shadow:
+        0 24px 48px -25px rgba(0,0,0,0.95);
+}}
+
+.amicus-closing-btn:hover span {{
+    transform: translateX(4px);
+}}
+
+@media (max-width: 640px) {{
+    .amicus-closing {{
+        padding: 6rem 18px 5rem;
+    }}
+
+    .amicus-closing-inner {{
+        min-height: 430px;
+        padding: 3rem 1.5rem;
+        border-radius: 26px;
+    }}
+
+    .amicus-closing h2 {{
+        font-size: clamp(2.6rem, 12vw, 4rem);
+    }}
+}}
     @media (min-width: 640px) {{ .glass-card {{ width: 16rem; }} }}
     .glass-card.stat {{ display: flex; flex-direction: column; justify-content: space-between; }}
     .glass-card .num {{
@@ -183,7 +815,7 @@ ui.add_head_html(f"""
     .glass-card .t-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }}
     .glass-card .t-badge {{
         width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center;
-        background: #000; color: #fff; font-weight: 700; font-size: 0.85rem;
+        background: #182338; color: #fff; font-weight: 700; font-size: 0.85rem;
     }}
     .glass-card .t-name {{ font-size: 0.9rem; font-weight: 600; color: #fff; }}
     .glass-card .quote {{ color: var(--text-70); font-size: 0.9rem; line-height: 1.6; margin: 0; }}
@@ -257,13 +889,203 @@ ui.add_head_html(f"""
     border-radius: 16px !important;
     min-width: 380px !important;
     font-weight: 600 !important;
-    backdrop-filter: blur(18px) saturate(140%) !important;
+    backdrop-filter: blur(18px) satu    rate(140%) !important;
     -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
     box-shadow:
         0 18px 40px -20px rgba(0,0,0,0.55),
         inset 0 1px 0 rgba(255,255,255,0.15) !important;
 }}
+    
+    .amicus-footer {{
+        width: 100%;
+        margin-top: 8rem;
+        padding: 0 24px 32px;
+        box-sizing: border-box;
+        color: rgba(255,255,255,0.8) !important;
+    }}
 
+    .amicus-footer-inner {{
+        width: min(1120px, 100%);
+        margin: 0 auto;
+    }}
+
+    .amicus-footer-top {{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 6rem;
+        padding: 4rem 0 4.5rem;
+        border-top: 1px solid rgba(255,255,255,0.14);
+    }}
+
+    .amicus-footer-brand {{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }}
+
+    .amicus-footer-logo {{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }}
+
+    .amicus-footer-logo img {{
+        display: block !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        max-width: 34px !important;
+        max-height: 34px !important;
+        border-radius: 10px;
+        object-fit: cover;
+    }}
+
+    .amicus-footer-brand p {{
+        margin: 1.25rem 0 0;
+        color: rgba(255,255,255,0.52) !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }}
+
+    .amicus-footer-columns {{
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 3rem;
+    }}
+
+    .amicus-footer-column {{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 13px;
+    }}
+
+    .amicus-footer-heading {{
+        color: #ffffff !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }}
+
+    .amicus-footer-column a {{
+        color: rgba(255,255,255,0.56) !important;
+        text-decoration: none !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.92rem;
+        line-height: 1.4;
+        transition: color .2s ease, transform .2s ease;
+    }}
+
+    .amicus-footer-column a:hover {{
+        color: #ffffff !important;
+        transform: translateX(2px);
+    }}
+
+    .amicus-footer-status {{
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 14px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.035);
+        border: 1px solid rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.68) !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.88rem;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }}
+
+    .amicus-status-dot {{
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #58d68d;
+        box-shadow: 0 0 10px rgba(88,214,141,0.35);
+    }}
+
+    .amicus-footer-bottom {{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 1.5rem;
+        margin-top: 1.6rem;
+        border-top: 1px solid rgba(255,255,255,0.10);
+    }}
+
+    .amicus-footer-copy {{
+        color: rgba(255,255,255,0.44) !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.88rem;
+    }}
+
+    .amicus-footer-socials {{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }}
+
+    .amicus-footer-socials a {{
+        color: rgba(255,255,255,0.78) !important;
+        text-decoration: none !important;
+        font-size: 1.08rem;
+        transition: color .2s ease, transform .2s ease;
+    }}
+
+    .amicus-footer-socials a:hover {{
+        color: #ffffff !important;
+        transform: translateY(-2px);
+    }}
+
+    .amicus-footer-disclaimer {{
+        margin-top: 1.25rem;
+        text-align: center;
+        color: rgba(255,255,255,0.32) !important;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.76rem;
+        line-height: 1.6;
+    }}
+
+    @media (max-width: 820px) {{
+        .amicus-footer-top {{
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }}
+
+        .amicus-footer-columns {{
+            grid-template-columns: repeat(2, 1fr);
+        }}
+    }}
+
+    @media (max-width: 560px) {{
+        .amicus-footer {{
+            padding-left: 18px;
+            padding-right: 18px;
+        }}
+
+        .amicus-footer-top {{
+            padding-top: 3rem;
+        }}
+
+        .amicus-footer-columns {{
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }}
+
+        .amicus-footer-bottom {{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }}
+    }}
     .site-footer {{
         max-width: 1120px; 
         margin: 5rem auto 0; 
@@ -407,40 +1229,163 @@ ui.add_head_html(f"""
     </style>
     <script>
     (function () {{
-        function bindSpinCards() {{
-            var cards = document.querySelectorAll('.spin-card:not([data-spin-bound])');
-            if (!cards.length) return;
-            if (!('IntersectionObserver' in window)) {{
-                cards.forEach(function (c) {{ c.setAttribute('data-spin-bound', '1'); c.classList.add('in-view'); }});
-                return;
-            }}
-            var io = new IntersectionObserver(function (entries) {{
-                entries.forEach(function (e) {{
-                    if (e.isIntersecting) {{
-                        e.target.classList.add('in-view');
-                        io.unobserve(e.target);
-                    }}
-                }});
-            }}, {{ threshold: 0.2 }});
-            cards.forEach(function (c) {{ c.setAttribute('data-spin-bound', '1'); io.observe(c); }});
-        }}
-        document.addEventListener('DOMContentLoaded', bindSpinCards);
-        setInterval(bindSpinCards, 400);
+        function clamp(value, min, max) {{
+    return Math.min(Math.max(value, min), max);
+}}
 
-        function forcePlay() {{
-            var v = document.querySelector('.amicus-video-bg');
-            if (!v) return;
-            v.muted = true;
-            v.defaultMuted = true;
-            v.setAttribute('muted', '');
-            var p = v.play();
-            if (p && p.catch) {{ p.catch(function () {{ }}); }}
-        }}
-        document.addEventListener('DOMContentLoaded', forcePlay);
-        setInterval(forcePlay, 800);
-        document.addEventListener('click', forcePlay, {{ once: true }});
-        document.addEventListener('touchstart', forcePlay, {{ once: true }});
-    }})();
+function easeOut(value) {{
+    return 1 - Math.pow(1 - value, 3);
+}}
+
+function updateScrollCards() {{
+    const cards = document.querySelectorAll('.scroll-card');
+
+    if (!cards.length) return;
+
+    const viewportHeight = window.innerHeight;
+    const focusPoint = viewportHeight * 0.58;
+
+    cards.forEach((card, index) => {{
+
+        const rect = card.getBoundingClientRect();
+
+        const cardCenter =
+            rect.top + rect.height / 2;
+
+        const distance =
+            (cardCenter - focusPoint) /
+            (viewportHeight * 0.65);
+
+        const normalized =
+            clamp(distance, -1, 1);
+
+        const magnitude =
+            Math.abs(normalized);
+
+        const eased =
+            easeOut(magnitude);
+
+        /*
+         * Cards gently float while approaching
+         * the focal point and settle when centered.
+         */
+        const floatAmount =
+            Math.sin(eased * Math.PI) * -14;
+
+        /*
+         * Very slight lateral movement.
+         * No rotation.
+         */
+        const sideAmount =
+            normalized * -5;
+
+        /*
+         * Cards subtly deepen as they move away.
+         */
+        const scale =
+            1 - (eased * 0.025);
+
+        card.style.setProperty(
+            '--scroll-y',
+            `${{floatAmount.toFixed(2)}}px`
+        );
+
+        card.style.setProperty(
+            '--scroll-scale',
+            scale.toFixed(4)
+        );
+
+        card.style.opacity =
+            (1 - eased * 0.08).toFixed(3);
+    }});
+}}
+
+let scrollFramePending = false;
+
+function requestScrollUpdate() {{
+
+    if (scrollFramePending) return;
+
+    scrollFramePending = true;
+
+    requestAnimationFrame(() => {{
+
+        updateScrollCards();
+
+        scrollFramePending = false;
+    }});
+}}
+
+document.addEventListener('DOMContentLoaded', () => {{
+
+    updateScrollCards();
+
+    window.addEventListener(
+        'scroll',
+        requestScrollUpdate,
+        {{ passive: true }}
+    );
+
+    window.addEventListener(
+        'resize',
+        requestScrollUpdate
+    );
+}});
+
+.amicus-story {{
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14rem;
+    padding-top: 8rem;
+    box-sizing: border-box;
+}}
+
+.amicus-story > * {{
+    width: 100% !important;
+    max-width: none !important;
+    align-self: center !important;
+    box-sizing: border-box !important;
+}}
+
+.amicus-story .product-demo,
+.amicus-story .showcase-section {{
+    width: min(1180px, calc(100% - 48px)) !important;
+    max-width: 1180px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+}}
+
+.amicus-story .showcase-grid-two,
+.amicus-story .showcase-grid-three,
+.amicus-story .showcase-split,
+.amicus-story .demo-frame {{
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}}
+
+.amicus-story .showcase-grid-two,
+.amicus-story .showcase-grid-three {{
+    justify-content: center !important;
+}}
+
+.amicus-story .showcase-card {{
+    width: 100% !important;
+    box-sizing: border-box !important;
+}}
+
+@media (max-width: 640px) {{
+    .amicus-story .product-demo,
+    .amicus-story .showcase-section {{
+        width: calc(100% - 24px) !important;
+    }}
+}}
     </script>
 """, shared=True)
 def image_bg():
@@ -457,8 +1402,8 @@ def navbar():
                 <div class="brand-name">Amicus</div>
             </div>
             <div class="nav-links">
-                <a class="hide-sm" href="/info">Use cases</a>
-                <a class="hide-sm" href="/info">FAQ</a>
+                <a class="hide-sm" href="/#use-cases">Use cases</a>
+            <a class="hide-sm" href="/#faq">FAQ</a>
                 <a class="nav-cta" href="/analyze">Analyze a document</a>
             </div>
         </div>
@@ -466,14 +1411,83 @@ def navbar():
         pass
 
 def footer():
-    with ui.column().classes('w-full flex justify-center items-center'):
+    with ui.element('footer').classes('amicus-footer'):
         ui.html("""
-            <div style="width: 100%; max-width: 1120px; margin: 5rem 0 3rem 0; padding: 2.4rem 24px; border-top: 1px solid rgba(255,255,255,0.16); text-align: center; color: rgba(255, 255, 255, 0.75);">
-                <i class="fa-solid fa-scale-balanced" style="color: #8AB4FF;"></i> &nbsp;<strong style="color: #ffffff;">Amicus</strong><br><br>
-                <span style="color: rgba(255,255,255,0.85);">© 2026 Amicus. All rights reserved.</span><br><br>
-                <em style="color: rgba(255, 255, 255, 0.6);">Disclaimer: Amicus provides informational insights and does not constitute official legal advice.</em>
+            <div class="amicus-footer-inner">
+
+                <div class="amicus-footer-top">
+
+                    <div class="amicus-footer-brand">
+                        <div class="amicus-footer-logo">
+                            <img src="%s" alt="Amicus">
+                            <span>Amicus</span>
+                        </div>
+
+                        <p>
+                            Clear legal understanding,<br>
+                            in every language.
+                        </p>
+                    </div>
+
+                    <div class="amicus-footer-columns">
+
+                        <div class="amicus-footer-column">
+                            <div class="amicus-footer-heading">Product</div>
+                            <a href="/analyze">Analyze a document</a>
+                            <a href="/#use-cases">Use cases</a>
+                            <a href="/#faq">FAQ</a>
+                        </div>
+
+                        <div class="amicus-footer-column">
+                            <div class="amicus-footer-heading">Resources</div>
+                            <a href="/#use-cases">Legal documents</a>
+                            <a href="/#faq">Frequently asked questions</a>
+                            <a href="/analyze">Get started</a>
+                        </div>
+
+                        <div class="amicus-footer-column">
+                            <div class="amicus-footer-heading">Amicus</div>
+                            <a href="/analyze">Analysis tool</a>
+                            <a href="/#faq">Privacy</a>
+                            <a href="/#faq">Disclaimer</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="amicus-footer-status">
+                    <span class="amicus-status-dot"></span>
+                    All systems operational
+                </div>
+
+                <div class="amicus-footer-bottom">
+
+                    <span class="amicus-footer-copy">
+                        © 2026 Amicus. All rights reserved.
+                    </span>
+
+                    <div class="amicus-footer-socials">
+                        <a href="#" aria-label="X">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" aria-label="GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="amicus-footer-disclaimer">
+                    Amicus provides informational insights and does not constitute official legal advice.
+                </div>
+
             </div>
-        """, sanitize=False)
+        """ % icon_src, sanitize=False)
+@ui.page('/')
 @ui.page('/')
 def home():
     image_bg()
@@ -484,112 +1498,375 @@ def home():
             with ui.column().classes('hero-copy gap-0'):
                 ui.html("""
                     <div class="hero-badge">
-                        <i class="fa-solid fa-globe"></i> Understand your rights in 65+ languages
+                        <i class="fa-solid fa-globe"></i>
+                        Understand your rights in 65+ languages
                     </div>
+
                     <h1 style="font-family: 'Fraunces', serif; font-weight: 500; font-style: italic;">
                         Your companion<br>
-                        <span style="color: #FFFFFF; font-style: normal;">in the legal world.</span>
+                        <span style="color: #FFFFFF; font-style: normal;">
+                            in the legal world.
+                        </span>
                     </h1>
+
                     <p class="lead" style="color: rgba(255, 255, 255, 0.85);">
                         Amicus turns confusing legal documents into clear, plain-language
                         guidance — so language is never a barrier.
                     </p>
                 """, sanitize=False)
+
                 with ui.row().classes('gap-3 mt-8'):
-                    ui.button('Go to Analysis Tool →', color=None, on_click=lambda: ui.navigate.to('/analyze')).classes('amicus-primary-btn px-7 py-3 text-base font-medium cursor-pointer')
-                    ui.button('Use Cases & FAQ', color=None, on_click=lambda: ui.navigate.to('/info')).classes('amicus-ghost-btn px-7 py-3 text-base font-medium cursor-pointer')
+                    ui.button(
+                        'Go to Analysis Tool →',
+                        color=None,
+                        on_click=lambda: ui.navigate.to('/analyze')
+                    ).classes(
+                        'amicus-primary-btn px-7 py-3 text-base font-medium cursor-pointer'
+                    )
+
+                    ui.button(
+                        'Explore Amicus',
+                        color=None,
+                        on_click=lambda: ui.run_javascript(
+                            "document.getElementById('product-demo').scrollIntoView({behavior:'smooth'})"
+                        )
+                    ).classes(
+                        'amicus-ghost-btn px-7 py-3 text-base font-medium cursor-pointer'
+                    )
 
             ui.html("""
-    <div class="glass-cards">
-        <div class="glass-card stat">
-            <div class="num">65+</div>
-            <div class="stat-body text-white">Languages supported, so guidance always reads the way you think.</div>
-        </div>
-        <div class="glass-card">
-            <div class="t-head">
-                <div class="t-badge">A</div>
-                <div class="t-name">Amicus</div>
-            </div>
-            <p class="stat-body text-white">Untangling the fine print so you always know where you stand, what your rights are, how to take your next steps, all from the comfort of your preferred language.</p>
-            <div class="t-foot">
-                <div>
-                    <div class="t-foot-text text-white">Your trusted legal companion</div>
-                </div>
-            </div>
-        </div>
-    </div>
-""", sanitize=False)
+                <div class="glass-cards">
+                    <div class="glass-card stat">
+                        <div class="num">65+</div>
+                        <div class="stat-body text-white">
+                            Languages supported, so guidance always reads the way you think.
+                        </div>
+                    </div>
 
-        ui.html("""
-    <div class="scroll-cue text-white" style="margin-top: 45px;"><i class="fa-solid fa-chevron-down"></i> Scroll to explore</div>
-""", sanitize=False)
+                    <div class="glass-card">
+                        <div class="t-head">
+                            <div class="t-badge">A</div>
+                            <div class="t-name">Amicus</div>
+                        </div>
 
-    with ui.column().classes('w-full items-center pb-10 gap-24 mt-24'):
-        ui.html("""
-                <section class="section">
-                    <div class="section-head">
-                        <div class="eyebrow text-white">How it works</div>
-                        <h2>Clarity in three simple steps</h2>
-                        <p class="text-white">No accounts, no legal jargon, no stored files — just upload and understand.</p>
-                    </div>
-                <div class="feature-grid">
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
-                        <div class="step-index text-white">Step 01</div>
-                        <h3>Upload or snap a photo</h3>
-                        <p class="text-white">Drop in a PDF or take a picture of any legal document, up to 20&nbsp;MB.</p>
-                    </div>
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-language"></i></div>
-                        <div class="step-index text-white">Step 02</div>
-                        <h3>Choose your language</h3>
-                        <p class="text-white">Pick from 65+ languages so guidance reads the way you think.</p>
-                    </div>
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <div class="step-index text-white">Step 03</div>
-                        <h3>Read plain-language guidance</h3>
-                        <p class="text-white">Get a clear summary of your rights and next steps in seconds.</p>
+                        <p class="stat-body text-white">
+                            Untangling the fine print so you always know where you stand,
+                            what your rights are, how to take your next steps, all from
+                            the comfort of your preferred language.
+                        </p>
+
+                        <div class="t-foot">
+                            <div>
+                                <div class="t-foot-text text-white">
+                                    Your trusted legal companion
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        """, sanitize=False).classes('w-full')
+            """, sanitize=False)
 
         ui.html("""
-            <section class="section">
+            <div class="scroll-cue text-white" style="margin-top: 45px;">
+                <i class="fa-solid fa-chevron-down"></i>
+                Scroll to explore
+            </div>
+        """, sanitize=False)
+
+    with ui.column().classes('amicus-story'):
+
+        ui.html("""
+            <section class="product-demo section" id="product-demo">
                 <div class="section-head">
-                    <div class="eyebrow text-white">Why Amicus</div>
-                    <h2>Built for trust, privacy, and understanding</h2>
+                    <div class="eyebrow text-white">See Amicus in action</div>
+                    <h2>Legal clarity, without the friction.</h2>
+                    <p class="text-white">
+                        See how a document goes from dense legal language
+                        to clear, useful understanding.
+                    </p>
                 </div>
-                <div class="feature-grid">
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <h3>Private by design</h3>
-                        <p class="text-white">Bank-grade encryption and zero storage — documents are deleted right after analysis.</p>
-                    </div>
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-scale-balanced"></i></div>
-                        <h3>Plain-language first</h3>
-                        <p class="text-white">Dense legal jargon becomes clear, actionable guidance anyone can follow.</p>
-                    </div>
-                    <div class="feature-card spin-card">
-                        <div class="feature-icon"><i class="fa-solid fa-earth-americas"></i></div>
-                        <h3>Truly multilingual</h3>
-                        <p class="text-white">65+ languages ensure that a language barrier never stands between you and justice.</p>
+
+                <div class="demo-frame scroll-card">
+                    <div class="demo-window">
+                        <div class="demo-window-bar">
+                            <div class="demo-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                            <div class="demo-window-title">
+                                Amicus
+                            </div>
+                        </div>
+
+                        <video
+                            class="amicus-demo-video"
+                            src="/images/amicus_demo.mp4"
+                            autoplay
+                            muted
+                            loop
+                            playsinline
+                            preload="metadata"
+                        ></video>
                     </div>
                 </div>
             </section>
-        """, sanitize=False).classes('w-full')
+        """, sanitize=False)
 
         ui.html("""
-            <section class="cta-band">
-                <h2>Understand any legal document today</h2>
-                <p class="text-white">Upload a file or snap a photo and get clear, plain-language guidance in your language.</p>
-            </section>
-        """, sanitize=False).classes('w-full')
+            <section class="section showcase-section">
+                <div class="section-head">
+                    <div class="eyebrow text-white">The experience</div>
+                    <h2>Designed to make complexity feel simple.</h2>
+                </div>
 
-        with ui.row().classes('w-full justify-center -mt-14'):
-            ui.button('Start free analysis →', color=None, on_click=lambda: ui.navigate.to('/analyze')).classes('amicus-primary-btn px-8 py-3 text-lg font-medium cursor-pointer mt-16').style("font-weight: bold;")
+                <div class="showcase-grid-two">
+
+                    <article class="showcase-card showcase-card-large scroll-card">
+                        <div class="showcase-image">
+                            <img src="/images/amicus_languages.png" alt="Amicus language selection">
+                        </div>
+
+                        <div class="showcase-copy">
+                            <div class="showcase-label">01 — Language</div>
+                            <h3>Understand in your language.</h3>
+                            <p>
+                                Amicus meets people where they are, with guidance
+                                available across 65+ languages.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="showcase-card showcase-card-large scroll-card">
+                        <div class="showcase-image">
+                            <img src="/images/amicus_plainlanguage.png" alt="Amicus plain language analysis">
+                        </div>
+
+                        <div class="showcase-copy">
+                            <div class="showcase-label">02 — Clarity</div>
+                            <h3>From legal jargon to clarity.</h3>
+                            <p>
+                                Dense language becomes an explanation you can actually
+                                understand and use.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+        """, sanitize=False)
+
+        ui.html("""
+            <section class="section showcase-section showcase-feature">
+
+                <div class="section-head">
+                    <div class="eyebrow text-white">The core</div>
+                    <h2>Know where you stand.</h2>
+                    <p class="text-white">
+                        Everything comes together in one focused analysis experience.
+                    </p>
+                </div>
+
+                <article class="showcase-card showcase-card-hero scroll-card">
+
+                    <div class="showcase-image showcase-image-hero">
+                        <img
+                            src="/images/amicus_analysis.png"
+                            alt="Amicus document analysis"
+                        >
+                    </div>
+
+                    <div class="showcase-copy showcase-copy-hero">
+                        <div class="showcase-label">03 — Analysis</div>
+                        <h3>See the important parts first.</h3>
+                        <p>
+                            Ask questions, choose your language, and receive a clear
+                            interpretation of the document in seconds.
+                        </p>
+                    </div>
+
+                </article>
+
+            </section>
+        """, sanitize=False)
+
+        ui.html("""
+            <section class="section showcase-section">
+
+                <div class="section-head">
+                    <div class="eyebrow text-white">Built around understanding</div>
+                    <h2>A simpler way through the paperwork.</h2>
+                </div>
+
+                <div class="showcase-grid-three">
+
+                    <article class="showcase-card showcase-card-small scroll-card">
+                        <div class="showcase-image">
+                            <img
+                                src="/images/amicus_upload.png"
+                                alt="Amicus upload experience"
+                            >
+                        </div>
+
+                        <div class="showcase-copy">
+                            <div class="showcase-label">04 — Upload</div>
+                            <h3>Start anywhere.</h3>
+                            <p>
+                                Upload a PDF or take a photo directly from your device.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="showcase-card showcase-card-small scroll-card">
+                        <div class="showcase-image">
+                            <img
+                                src="/images/amicus_questions.png"
+                                alt="Amicus question input"
+                            >
+                        </div>
+
+                        <div class="showcase-copy">
+                            <div class="showcase-label">05 — Questions</div>
+                            <h3>Ask what actually matters.</h3>
+                            <p>
+                                Point Amicus toward the part of the document you
+                                need help understanding.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="showcase-card showcase-card-small scroll-card">
+                        <div class="showcase-image">
+                            <img
+                                src="/images/amicus_guidance.png"
+                                alt="Amicus guidance result"
+                            >
+                        </div>
+
+                        <div class="showcase-copy">
+                            <div class="showcase-label">06 — Guidance</div>
+                            <h3>Know what to do next.</h3>
+                            <p>
+                                Turn complicated language into useful, plain-language
+                                guidance.
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+        """, sanitize=False)
+
+        ui.html("""
+            <section class="section showcase-section">
+
+                <div class="showcase-split">
+
+                    <article class="showcase-card showcase-card-tall scroll-card">
+
+                        <div class="showcase-image showcase-image-tall">
+                            <img
+                                src="/images/amicus_privacy.png"
+                                alt="Amicus privacy experience"
+                            >
+                        </div>
+
+                    </article>
+
+                    <div class="showcase-side-copy">
+
+                        <div class="eyebrow text-white">
+                            Built for real people
+                        </div>
+
+                        <h2>
+                            Legal help should feel
+                            understandable.
+                        </h2>
+
+                        <div class="showcase-points">
+
+                            <div class="showcase-point">
+                                <div class="point-number">01</div>
+                                <div>
+                                    <h3>65+ languages</h3>
+                                    <p>
+                                        Understand documents naturally without
+                                        language becoming another barrier.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="showcase-point">
+                                <div class="point-number">02</div>
+                                <div>
+                                    <h3>Plain-language first</h3>
+                                    <p>
+                                        The experience is designed around
+                                        understanding, not legal terminology.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="showcase-point">
+                                <div class="point-number">03</div>
+                                <div>
+                                    <h3>Private by design</h3>
+                                    <p>
+                                        Documents are processed for the analysis
+                                        experience rather than becoming part of
+                                        a permanent library.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="showcase-point">
+                                <div class="point-number">04</div>
+                                <div>
+                                    <h3>Actionable guidance</h3>
+                                    <p>
+                                        Focus on what matters and what to consider next.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+        """, sanitize=False)
+
+        ui.html("""
+            <section class="amicus-closing">
+                <div class="amicus-closing-inner">
+
+                    <div class="amicus-closing-eyebrow">
+                        AMICUS
+                    </div>
+
+                    <h2>
+                        Understand what matters.<br>
+                        Before you act.
+                    </h2>
+
+                    <p>
+                        Clear, plain-language guidance for the documents
+                        that shape your life.
+                    </p>
+
+                    <a href="/analyze" class="amicus-closing-btn">
+                        Analyze a document
+                        <span>→</span>
+                    </a>
+
+                </div>
+            </section>
+        """, sanitize=False)
 
         footer()
 
